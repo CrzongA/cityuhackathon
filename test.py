@@ -38,38 +38,30 @@ def parse_hocr(search_terms=None, hocr_file=None, regex=None):
 
     result = dict()
 
+
+    # Loop through all the words and look for our search terms.
     for word in words:
+
         w = word.get_text().lower()
 
-        bbox = word['title'].split(';')
-        bbox = bbox[0].split(' ')
-        bbox = tuple([int(x) for x in bbox[1:]])
+        for s in search_terms:
 
-        result.update({w:bbox})
+            # If the word is in our search terms, find the bounding box
+            if len(w) > 1 and difflib.SequenceMatcher(None, s, w).ratio() > .5:
+                bbox = word['title'].split(';')
+                bbox = bbox[0].split(' ')
+                bbox = tuple([int(x) for x in bbox[1:]])
+                count = bbox.count(s)
 
-    # # Loop through all the words and look for our search terms.
-    # for word in words:
-    #
-    #     w = word.get_text().lower()
-    #
-    #     for s in search_terms:
-    #
-    #         # If the word is in our search terms, find the bounding box
-    #         if len(w) > 1 and difflib.SequenceMatcher(None, s, w).ratio() > .5:
-    #             bbox = word['title'].split(';')
-    #             bbox = bbox[0].split(' ')
-    #             bbox = tuple([int(x) for x in bbox[1:]])
-    #             count = bbox.count(s)
-    #
-    #             # Update the result dictionary or raise an error if the search term is in there twice.
-    #             if s not in result.keys():
-    #                 result.update({s:bbox})
-    #             else:
-    #
-    #                 result.update({s+"("+str(count)+")":bbox})
-    #
-    #         else:
-    #             pass
+                # Update the result dictionary or raise an error if the search term is in there twice.
+                if s not in result.keys():
+                    result.update({s:bbox})
+                else:
+
+                    result.update({s+"("+str(count)+")":bbox})
+
+            else:
+                pass
 
     return result
 

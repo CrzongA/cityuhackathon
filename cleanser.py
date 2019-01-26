@@ -2,6 +2,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 
 hocr_file = "/media/leon/22CEF525CEF4F241/LEONLAH/CityUHack/CityU-Hackathon-2019/Training/1/hocr/1-74.hocr"
+output_file = "/media/leon/22CEF525CEF4F241/LEONLAH/CityUHack/projects/result1.txt"
 
 hocr = open(hocr_file, 'r').read()
 soup = BeautifulSoup(hocr, 'html.parser')
@@ -21,3 +22,4 @@ for word in words:
 print('')
 print(hocr_file)
 print(result)
+
